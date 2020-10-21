@@ -31,7 +31,7 @@ async function main() {
 
         console.timeEnd('forof')
 
-        console.log(`names`, names)
+        console.log(`Names`, names)
     } catch (erro) {
         console.error('Erro interno', erro)
     }
