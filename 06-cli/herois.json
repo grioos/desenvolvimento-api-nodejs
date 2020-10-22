@@ -1,1 +1,107 @@
-[{"id":1,"nome":"Flash","poder":"Speed"}]
+{
+    "0": {
+        "id": 1,
+        "nome": "Flash",
+        "poder": "Speed"
+    },
+    "1": {
+        "id": 1,
+        "nome": "Flash",
+        "poder": "Speed"
+    },
+    "2": {
+        "id": 1,
+        "nome": "Flash",
+        "poder": "Speed"
+    },
+    "3": {
+        "id": 1,
+        "nome": "Flash",
+        "poder": "Speed"
+    },
+    "4": {
+        "id": 1,
+        "nome": "Flash",
+        "poder": "Speed"
+    },
+    "5": {
+        "id": 1,
+        "nome": "Flash",
+        "poder": "Speed"
+    },
+    "6": {
+        "id": 1,
+        "nome": "Flash",
+        "poder": "Speed"
+    },
+    "7": {
+        "id": 1,
+        "nome": "Flash",
+        "poder": "Speed"
+    },
+    "8": {
+        "id": 1,
+        "nome": "Flash",
+        "poder": "Speed"
+    },
+    "9": {
+        "id": 1,
+        "nome": "Flash",
+        "poder": "Speed"
+    },
+    "10": {
+        "id": 1,
+        "nome": "Flash",
+        "poder": "Speed"
+    },
+    "11": {
+        "id": 1,
+        "nome": "Flash",
+        "poder": "Speed"
+    },
+    "12": {
+        "id": 1,
+        "nome": "Flash",
+        "poder": "Speed"
+    },
+    "13": {
+        "id": 1,
+        "nome": "Flash",
+        "poder": "Speed"
+    },
+    "14": {
+        "id": 1,
+        "nome": "Flash",
+        "poder": "Speed"
+    },
+    "15": {
+        "id": 1,
+        "nome": "Flash",
+        "poder": "Speed"
+    },
+    "16": {
+        "id": 1,
+        "nome": "Flash",
+        "poder": "Speed"
+    },
+    "17": {
+        "id": 1,
+        "nome": "Flash",
+        "poder": "Speed"
+    },
+    "18": {
+        "id": 1,
+        "nome": "Flash",
+        "poder": "Speed"
+    },
+    "19": {
+        "id": 1,
+        "nome": "Flash",
+        "poder": "Speed"
+    },
+    "objetoAtualizar": {
+        "id": 2,
+        "nome": "Batman",
+        "poder": "Dinheiro"
+    }
+}
