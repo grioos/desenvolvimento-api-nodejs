@@ -41,6 +41,6 @@ describe('Star Wars Tests', () => {
         const nomeBase = 'R2-D2'
         const resultado = await obterPessoas(nomeBase)
 
-        assert.deepEqual(resultado, expected)
+        assert.deepStrictEqual(resultado, expected)
     })
 })
