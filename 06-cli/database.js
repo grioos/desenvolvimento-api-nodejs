@@ -10,7 +10,7 @@ class Database {
     }
 
     async obterDadosArquivo() {
-        const arquivo = await readFileAsync(this.NOME_ARQUIVO, 'utf-8')
+        const arquivo = await readFileAsync(this.NOME_ARQUIVO, 'utf8')
 
         return JSON.parse(arquivo.toString())
     }
@@ -23,8 +23,8 @@ class Database {
 
     async cadastrar(heroi) {
         const dados = await this.obterDadosArquivo()
-        const id = heroi.id <= 2 ? heroi.id : new Date()
-        const heroiComId = { id, ...heroi }
+        const id = heroi.id <= 2 ? heroi.id : Date.now()
+        const heroiComId = { ...heroi, id }
         const dadosFinal = [...dados, heroiComId]
         const resultado = await this.escreverArquivo(dadosFinal)
 
@@ -33,14 +33,14 @@ class Database {
 
     async listar(id) {
         const dados = await this.obterDadosArquivo()
-        const dadosFiltrados = dados.filter(item => (id ? (item.id === id) : true))
+        const dadosFiltrados = dados.filter(item => (id ? item.id == id : true))
 
         return dadosFiltrados
     }
 
     async remover(id) {
         if (!id) {
-            return await this.escreverArquivo()
+            return await this.escreverArquivo([])
         }
 
         const dados = await this.obterDadosArquivo()
@@ -64,6 +64,7 @@ class Database {
         }
 
         const atual = dados[indice]
+
         const objetoAtualizar = {
             ...atual,
             ...modificacoes
@@ -71,10 +72,11 @@ class Database {
 
         dados.splice(indice, 1)
 
-        return await this.escreverArquivo({
+
+        return await this.escreverArquivo([
             ...dados,
             objetoAtualizar
-        })
+        ])
     }
 }
 

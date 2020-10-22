@@ -1,5 +1,5 @@
 const { deepStrictEqual } = require('assert')
-const database = require('./database')
+const Database = require('./database')
 const DEFAULT_ITEM_CADASTRAR = {
     nome: 'Flash',
     poder: 'Speed',
@@ -13,13 +13,14 @@ const DEFAULT_ITEM_ATUALIZAR = {
 
 describe('Suite de manipulação de Herois', () => {
     before(async () => {
-        await database.cadastrar(DEFAULT_ITEM_CADASTRAR)
-        await database.cadastrar(DEFAULT_ITEM_ATUALIZAR)
+        await Database.remover()
+        await Database.cadastrar(DEFAULT_ITEM_CADASTRAR)
+        await Database.cadastrar(DEFAULT_ITEM_ATUALIZAR)
     })
 
     it('Deve pesquisar um heroi usando arquivos', async () => {
         const expected = DEFAULT_ITEM_CADASTRAR
-        const [resultado] = await database.listar(expected.id)
+        const [resultado] = await Database.listar(expected.id)
 
         deepStrictEqual(resultado, expected)
     })
@@ -27,16 +28,16 @@ describe('Suite de manipulação de Herois', () => {
     it('Deve cadastrar um heroi, usando arquivos', async () => {
         const expected = DEFAULT_ITEM_CADASTRAR
 
-        await database.cadastrar(DEFAULT_ITEM_CADASTRAR)
+        await Database.cadastrar(DEFAULT_ITEM_CADASTRAR)
 
-        const [atual] = await database.listar(DEFAULT_ITEM_CADASTRAR.id)
+        const [atual] = await Database.listar(expected.id)
 
         deepStrictEqual(atual, expected)
     })
 
     it('Deve remover um heroi pelo id', async () => {
         const expected = true
-        const resultado = await database.remover(DEFAULT_ITEM_CADASTRAR.id)
+        const resultado = await Database.remover(DEFAULT_ITEM_CADASTRAR.id)
 
         deepStrictEqual(resultado, expected)
     })
@@ -53,9 +54,9 @@ describe('Suite de manipulação de Herois', () => {
             poder: 'Dinheiro'
         }
 
-        await database.atualizar(DEFAULT_ITEM_ATUALIZAR.id, novoDado)
+        await Database.atualizar(DEFAULT_ITEM_ATUALIZAR.id, novoDado)
 
-        const [resultado] = await database.listar(DEFAULT_ITEM_ATUALIZAR.id)
+        const [resultado] = await Database.listar(DEFAULT_ITEM_ATUALIZAR.id)
 
         deepStrictEqual(resultado, expected)
     })
