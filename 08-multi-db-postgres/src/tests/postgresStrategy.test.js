@@ -13,6 +13,7 @@ const MOCK_HEROI_ATUALIZAR = {
 describe('Postgres Strategy', () => {
     before(async () => {
         await context.connect()
+        await context.delete()
         await context.create(MOCK_HEROI_ATUALIZAR)
     })
 
@@ -46,5 +47,12 @@ describe('Postgres Strategy', () => {
 
         assert.deepStrictEqual(result, 1)
         assert.deepStrictEqual(itemAtualizado.nome, novoItem.nome)
+    })
+
+    it('remover por id', async () => {
+        const [item] = await context.read({})
+        const result = await context.delete(item.id)
+
+        assert.deepStrictEqual(result, 1)
     })
 })
