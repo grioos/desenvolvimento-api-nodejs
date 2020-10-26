@@ -10,11 +10,20 @@ const MOCK_HEROI_DEFAULT = {
     nome: `Homem Aranha-${Date.now()}`,
     poder: 'Super Teia'
 }
+const MOCK_HEROI_ATUALIZAR = {
+    nome: `Patolino-${Date.now()}`,
+    poder: 'Velocidade'
+}
 const context = new Context(new MongoDb())
+let MOCK_HEROI_ID = ''
 
 describe('MongoDB Suite de Testes', function () {
     before(async () => {
         await context.connect()
+        await context.create(MOCK_HEROI_DEFAULT)
+        const result = await context.create(MOCK_HEROI_ATUALIZAR)
+
+        MOCK_HEROI_ID = result.id
     })
 
     it('verificar conexao', async () => {
@@ -35,4 +44,13 @@ describe('MongoDB Suite de Testes', function () {
 
         assert.deepStrictEqual(result, MOCK_HEROI_DEFAULT)
     })
+
+    it('atualizar', async () => {
+        const result = await context.update(MOCK_HEROI_ID, {
+            nome: 'Pernalonga'
+        })
+
+        assert.deepStrictEqual(result.nModified, 1)
+    })
+
 })
