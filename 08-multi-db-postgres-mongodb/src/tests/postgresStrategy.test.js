@@ -10,6 +10,7 @@ const MOCK_HEROI_ATUALIZAR = {
     nome: 'Batman',
     poder: 'Dinheiro'
 }
+
 describe('Postgres Strategy', () => {
     before(async () => {
         await context.connect()
