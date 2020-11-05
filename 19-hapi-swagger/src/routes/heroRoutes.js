@@ -127,6 +127,9 @@ class HeroRoutes extends BaseRoute {
             path: '/herois/{id}',
             method: 'DELETE',
             config: {
+                tags: ['api'],
+                description: 'Deve remover heroi',
+                notes: 'O id tem que ser valido',
                 validate: {
                     failAction,
                     params: {
