@@ -176,11 +176,11 @@ describe.only('Suite de testes da API Heroes', () => {
         const dados = JSON.parse(result.payload)
         const expected = {
             statusCode: 500,
-            error: 'Precondição falhou',
-            message: 'Id não encontrado no banco'
+            error: 'Erro interno no servidor',
+            message: 'Um erro interno no servidor ocorreu'
         }
 
-        assert.ok(statusCode === 412)
+        assert.ok(statusCode === 500)
         assert.deepStrictEqual(dados, expected)
     })
 })
