@@ -1,6 +1,6 @@
 const ICrud = require('../interfaces/interfaceCrud')
 
-class ContextSrategy extends ICrud {
+class ContextStrategy extends ICrud {
     constructor(strategy) {
         super()
         this._database = strategy
@@ -10,8 +10,8 @@ class ContextSrategy extends ICrud {
         return this._database.create(item)
     }
 
-    read(item, skip, limit) {
-        return this._database.read(item, skip, limit)
+    read(item) {
+        return this._database.read(item)
     }
 
     update(id, item) {
@@ -31,4 +31,4 @@ class ContextSrategy extends ICrud {
     }
 }
 
-module.exports = ContextSrategy
+module.exports = ContextStrategy

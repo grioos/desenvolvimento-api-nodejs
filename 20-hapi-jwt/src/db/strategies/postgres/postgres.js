@@ -1,6 +1,5 @@
 const ICrud = require('./../interfaces/interfaceCrud')
 const Sequelize = require('sequelize')
-const { schema } = require('./schemas/heroiSchema')
 
 class Postgres extends ICrud {
     constructor(connection, schema) {
@@ -31,10 +30,31 @@ class Postgres extends ICrud {
         return model
     }
 
+    static async connect() {
+        const connection = new Sequelize(
+            'heroes',
+            'grios',
+            'password',
+            {
+                host: 'localhost',
+                dialect: 'postgres',
+                quoteIdentifiers: false,
+                operatorsAliases: false,
+                logging: false
+            }
+        )
+
+        return connection
+    }
+
     async create(item) {
         const { dataValues } = await this._schema.create(item)
 
         return dataValues
+    }
+
+    read(item = {}) {
+        return this._schema.findAll({ where: item, raw: true })
     }
 
     update(id, item) {
@@ -44,26 +64,6 @@ class Postgres extends ICrud {
     delete(id) {
         const query = id ? { id } : {}
         return this._schema.destroy({ where: query })
-    }
-
-    read(item = {}) {
-        return this._schema.findAll({ where: item, raw: true })
-    }
-
-    static async connect() {
-        const connection = new Sequelize(
-            'heroes',
-            'grios',
-            'password', {
-            host: 'localhost',
-            dialect: 'postgres',
-            quoteIdentifiers: false,
-            operatorsAliases: false,
-            logging: false
-        }
-        )
-
-        return connection
     }
 }
 

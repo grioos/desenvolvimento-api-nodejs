@@ -1,12 +1,10 @@
 const assert = require('assert')
-const MongoDb = require('./../db/strategies/mongodb/mongodb')
+const MongoDB = require('./../db/strategies/mongodb/mongodb')
 const HeroiSchema = require('./../db/strategies/mongodb/schemas/heroisSchema')
 const Context = require('./../db/strategies/base/contextStrategy')
-const MongoDB = require('./../db/strategies/mongodb/mongodb')
-const heroisSchema = require('./../db/strategies/mongodb/schemas/heroisSchema')
 const MOCK_HEROI_CADASTRAR = {
     nome: 'Mulher Maravilha',
-    poder: 'Laço'
+    poder: 'Laco'
 }
 const MOCK_HEROI_DEFAULT = {
     nome: `Homem Aranha-${Date.now()}`,
@@ -16,16 +14,15 @@ const MOCK_HEROI_ATUALIZAR = {
     nome: `Patolino-${Date.now()}`,
     poder: 'Velocidade'
 }
-const context = new Context(new MongoDb())
 let MOCK_HEROI_ID = ''
+let context = {}
 
 describe('MongoDB Suite de Testes', function () {
-    before(async () => {
-        const connection = MongoDb.connect()
+    beforeEach(async () => {
+        const connection = MongoDB.connect()
 
         context = new Context(new MongoDB(connection, HeroiSchema))
 
-        await context.connect()
         await context.create(MOCK_HEROI_DEFAULT)
 
         const result = await context.create(MOCK_HEROI_ATUALIZAR)
@@ -35,12 +32,13 @@ describe('MongoDB Suite de Testes', function () {
 
     it('Verificar conexao', async () => {
         const result = await context.isConnected()
+        const expected = 'Conectado'
 
         assert.deepStrictEqual(result, expected)
     })
 
     it('Cadastrar', async () => {
-        const { nome, poder } = await context.create()
+        const { nome, poder } = await context.create(MOCK_HEROI_CADASTRAR)
 
         assert.deepStrictEqual({ nome, poder }, MOCK_HEROI_CADASTRAR)
     })

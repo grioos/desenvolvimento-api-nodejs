@@ -12,8 +12,8 @@ const heroiSchema = new Mongoose.Schema({
 
     insertedAt: {
         type: Date,
-        dafault: new Date()
+        default: new Date()
     }
 })
 
-module.exports = Mongoose.model('herois', heroiSchema)
+module.exports = Mongoose.models.herois || Mongoose.model('herois', heroiSchema)

@@ -2,7 +2,6 @@ const Sequelize = require('sequelize')
 const HeroiSchema = {
     name: 'herois',
     schema: {
-
         id: {
             type: Sequelize.INTEGER,
             required: true,

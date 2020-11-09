@@ -1,6 +1,5 @@
 const ICrud = require('./../interfaces/interfaceCrud')
 const Mongoose = require('mongoose')
-const { schema } = require('./schemas/heroisSchema')
 const STATUS = {
     0: 'Disconectado',
     1: 'Conectado',
@@ -29,7 +28,7 @@ class MongoDB extends ICrud {
 
     static connect() {
         Mongoose.connect('mongodb://grios:secreta@localhost:27017/herois',
-            { useNewUrlParser: true, useUnifiedTopology: true }, error => {
+            { useNewUrlParser: true, useUnifiedTopology: true }, function (error) {
                 if (!error) return
 
                 console.log('Falha na conexão', error)
@@ -41,12 +40,12 @@ class MongoDB extends ICrud {
         return connection
     }
 
-    async create(item) {
+    create(item) {
         return this._schema.create(item)
     }
 
-    read(item, skip = 0, limit = 10) {
-        return this._schema.find(item).skip(skip).limit(limit)
+    read(item) {
+        return this._schema.find(item)
     }
 
     update(id, item) {
