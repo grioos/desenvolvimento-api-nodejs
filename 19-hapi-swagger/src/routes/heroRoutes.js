@@ -21,20 +21,12 @@ class HeroRoutes extends BaseRoute {
                 notes: 'Pode paginar resultados e filtrar por nome',
                 validate: {
                     failAction,
-                    query: {
-                        skip: Joi.number().integer().default(0),
-                        limit: Joi.number().integer().default(10),
-                        nome: Joi.string().min(3).max(100)
-                    }
                 }
             },
 
             handler: (request, headers) => {
                 try {
-                    const { skip, limit, nome } = request.query
-                    const query = nome ? { nome: { $regex: `.*${nome}*.` } } : {}
-
-                    return this.db.read(query, skip, limit)
+                    return this.db.read()
                 } catch (error) {
                     console.log('Deu ruim', error)
 
@@ -54,22 +46,14 @@ class HeroRoutes extends BaseRoute {
                 notes: 'Deve cadastrar heroi por nome e poder',
                 validate: {
                     failAction,
-                    payload: {
-                        nome: Joi.string().required().min(3).max(100),
-                        poder: Joi.string().required().min(2).max(100)
-                    }
                 }
             },
 
-            handler: async request => {
+            handler: (request, headers) => {
                 try {
-                    const { nome, poder } = request.payload
-                    const result = await this.db.create({ nome, poder })
+                    const result = request.payload
 
-                    return {
-                        message: 'Heroi cadastrado com sucesso',
-                        _id: result.id
-                    }
+                    return this.db.create(result)
                 } catch (error) {
                     console.log('Deu ruim', error)
 
@@ -88,31 +72,16 @@ class HeroRoutes extends BaseRoute {
                 description: 'Deve atualizar heroi',
                 notes: 'Pode atualizar qualquer campo',
                 validate: {
-                    params: {
-                        id: Joi.string().required()
-                    },
-                    payload: {
-                        nome: Joi.string().min(3).max(100),
-                        poder: Joi.string().min(2).max(100)
-                    }
+                    failAction,
                 }
             },
 
-            handler: async request => {
+            handler: (request, headers) => {
                 try {
-                    const { id } = request.params
-                    const { payload } = request
-                    const dadosString = JSON.stringify(payload)
-                    const dados = JSON.parse(dadosString)
-                    const result = await this.db.update(id, dados)
+                    const payload = request.payload
+                    const id = request.params.id
 
-                    if (result.nModified !== 1) {
-                        return Boom.preconditionFailed('Id não foi encontrado no banco')
-                    }
-
-                    return {
-                        message: 'Heroi atualizado com sucesso'
-                    }
+                    return this.db.update(id, payload)
                 } catch (error) {
                     console.error('Deu ruim', error)
 
@@ -132,25 +101,14 @@ class HeroRoutes extends BaseRoute {
                 notes: 'O id tem que ser valido',
                 validate: {
                     failAction,
-                    params: {
-                        id: Joi.string().required()
-                    }
                 }
             },
 
             handler: async request => {
                 try {
                     const { id } = request.params
-                    const result = await this.db.delete(id)
 
-                    if (result.n !== 1)
-                        return {
-                            message: Boom.preconditionFailed('Id não foi encontrado no banco')
-                        }
-
-                    return {
-                        message: 'Heroi removido com sucesso'
-                    }
+                    return this.db.delete(id)
                 } catch (error) {
                     console.log('Deu ruim', error)
 
