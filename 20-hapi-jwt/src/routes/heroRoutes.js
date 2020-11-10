@@ -21,12 +21,24 @@ class HeroRoutes extends BaseRoute {
                 notes: 'Pode paginar resultados e filtrar por nome',
                 validate: {
                     failAction,
+                    query: {
+                        skip: Joi.number().integer().default(0),
+                        limit: Joi.number().integer().default(10),
+                        nome: Joi.string().min(3).max(100)
+                    }
                 }
             },
 
             handler: (request, headers) => {
                 try {
-                    return this.db.read()
+                    const { skip, limit, nome } = request.query
+                    const query = {
+                        nome: {
+                            $regex: `.*${nome}.*`
+                        }
+                    }
+
+                    return this.db.read(nome ? query : {}, skip, limit)
                 } catch (error) {
                     console.log('Deu ruim', error)
 
@@ -46,6 +58,10 @@ class HeroRoutes extends BaseRoute {
                 notes: 'Deve cadastrar heroi por nome e poder',
                 validate: {
                     failAction,
+                    payload: {
+                        nome: Joi.string().required().min(3).max(100),
+                        poder: Joi.string().required().min(2).max(100)
+                    }
                 }
             },
 
@@ -73,15 +89,31 @@ class HeroRoutes extends BaseRoute {
                 notes: 'Pode atualizar qualquer campo',
                 validate: {
                     failAction,
+                    params: {
+                        id: Joi.string().required()
+                    },
+                    payload: {
+                        nome: Joi.string().min(3).max(100),
+                        poder: Joi.string().min(2).max(100)
+                    }
                 }
             },
 
-            handler: (request, headers) => {
+            handler: async (request, headers) => {
                 try {
-                    const payload = request.payload
-                    const id = request.params.id
+                    const { id } = request.params;
+                    const { payload } = request
+                    const dadosString = JSON.stringify(payload)
+                    const dados = JSON.parse(dadosString)
+                    const result = await this.db.update(id, dados)
 
-                    return this.db.update(id, payload)
+                    if (result.nModified !== 1) return {
+                        message: 'Não foi possível atualizar'
+                    }
+
+                    return {
+                        message: 'Heroi atualizado com sucesso'
+                    }
                 } catch (error) {
                     console.error('Deu ruim', error)
 
@@ -101,6 +133,9 @@ class HeroRoutes extends BaseRoute {
                 notes: 'O id tem que ser valido',
                 validate: {
                     failAction,
+                    params: {
+                        id: Joi.string().required()
+                    }
                 }
             },
 

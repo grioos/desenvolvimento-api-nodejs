@@ -2,6 +2,7 @@ const Hapi = require('@hapi/hapi')
 const Inert = require('@hapi/inert')
 const Vision = require('@hapi/vision')
 const HapiSwagger = require('hapi-swagger')
+const Joi = require('joi')
 const Context = require('./db/strategies/base/contextStrategy')
 const MongoDb = require('./db/strategies/mongodb/mongodb')
 const HeroiSchema = require('./db/strategies/mongodb/schemas/heroisSchema')
@@ -32,6 +33,8 @@ async function main() {
             options: swaggerOptions
         }
     ])
+
+    app.validator(Joi)
 
     app.route(
         mapRoutes(new HeroRoutes(context), HeroRoutes.methods())
