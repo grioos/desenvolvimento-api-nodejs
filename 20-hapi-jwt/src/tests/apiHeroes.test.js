@@ -1,5 +1,9 @@
 const assert = require('assert')
 const api = require('./../api')
+const TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ilh1eGFkYXNpbHZhIiwiaWQiOjEsImlhdCI6MTYwNTAyMTU3MX0.Zn7rcQ_oGjd7RI4fccJgbS2NRnLWt2h5zVjOOT32D7U'
+const headers = {
+    Authorization: TOKEN
+}
 let app = {}
 let MOCK_ID, MOCK_NOME = ''
 
@@ -7,6 +11,7 @@ function cadastrar() {
     return app.inject({
         method: 'POST',
         url: '/herois',
+        headers,
         payload: {
             nome: 'Flash',
             poder: 'Velocidade'
@@ -29,7 +34,8 @@ describe('Suite de testes da API Heroes', () => {
     it('Listar /herois', async () => {
         const result = await app.inject({
             method: 'GET',
-            url: '/herois'
+            url: '/herois',
+            headers,
         })
         const dados = JSON.parse(result.payload)
         const statusCode = result.statusCode
@@ -42,7 +48,8 @@ describe('Suite de testes da API Heroes', () => {
         const TAMANHO_LIMITE = 3
         const result = await app.inject({
             method: 'GET',
-            url: `/herois?skip=0&limit=${TAMANHO_LIMITE}`
+            url: `/herois?skip=0&limit=${TAMANHO_LIMITE}`,
+            headers,
         })
         const dados = JSON.parse(result.payload)
         const statusCode = result.statusCode
@@ -55,7 +62,8 @@ describe('Suite de testes da API Heroes', () => {
         const NOME = MOCK_NOME
         const result = await app.inject({
             method: 'GET',
-            url: `/herois?skip=0&limit=1000&nome=${NOME}`
+            url: `/herois?skip=0&limit=1000&nome=${NOME}`,
+            headers,
         })
         const dados = JSON.parse(result.payload)
         const statusCode = result.statusCode
@@ -79,7 +87,8 @@ describe('Suite de testes da API Heroes', () => {
         const result = await app.inject({
             method: 'PATCH',
             url: `/herois/${_id}`,
-            payload: JSON.stringify(expected)
+            payload: JSON.stringify(expected),
+            headers,
         })
         const statusCode = result.statusCode
         const dados = JSON.parse(result.payload)
@@ -96,7 +105,8 @@ describe('Suite de testes da API Heroes', () => {
         const result = await app.inject({
             method: 'PATCH',
             url: `/herois/${_id}`,
-            payload: JSON.stringify(expected)
+            payload: JSON.stringify(expected),
+            headers,
         })
 
         const statusCode = result.statusCode
@@ -109,7 +119,8 @@ describe('Suite de testes da API Heroes', () => {
     it('Remover DELETE - /herois/:id', async () => {
         const result = await app.inject({
             method: 'DELETE',
-            url: `/herois/${MOCK_ID}`
+            url: `/herois/${MOCK_ID}`,
+            headers,
         })
         const statusCode = result.statusCode
         const dados = JSON.parse(result.payload)
