@@ -18,7 +18,7 @@ let MOCK_HEROI_ID = ''
 let context = {}
 
 describe('MongoDB Suite de Testes', function () {
-    beforeEach(async () => {
+    before(async () => {
         const connection = MongoDB.connect()
 
         context = new Context(new MongoDB(connection, HeroiSchema))
