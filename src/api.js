@@ -60,7 +60,6 @@ async function main() {
     app.auth.strategy('jwt', 'jwt', {
         key: JWT_SECRET,
         validate: async (dados, request) => {
-
             return {
                 isValid: true
             }
