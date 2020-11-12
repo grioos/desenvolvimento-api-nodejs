@@ -35,11 +35,11 @@ function mapRoutes(instance, methods) {
 }
 
 async function main() {
-    const connection = MongoDb.connect()
-    const context = new Context(new MongoDb(connection, HeroiSchema))
     const connectionPostgres = await Postgres.connect()
     const model = await Postgres.defineModel(connectionPostgres, UsuarioSchema)
     const contextPostgres = new Context(new Postgres(connectionPostgres, model))
+    const connection = MongoDb.connect()
+    const context = new Context(new MongoDb(connection, HeroiSchema))
     const swaggerOptions = {
         info: {
             title: 'API Herois - #CursoNodeBR',
@@ -60,16 +60,6 @@ async function main() {
     app.auth.strategy('jwt', 'jwt', {
         key: JWT_SECRET,
         validate: async (dados, request) => {
-            const [result] = await contextPostgres.read({
-                username: dados.username.toLowerCase(),
-                id: dado.id
-            })
-
-            if (!result) {
-                return {
-                    isValid: false
-                }
-            }
 
             return {
                 isValid: true
@@ -77,8 +67,8 @@ async function main() {
         }
     })
 
-    app.auth.default('jwt')
     app.validator(Joi)
+    app.auth.default('jwt')
     app.route([
         ...mapRoutes(new HeroRoutes(context), HeroRoutes.methods()),
         ...mapRoutes(new AuthRoutes(JWT_SECRET, contextPostgres), AuthRoutes.methods())

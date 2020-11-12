@@ -1,11 +1,11 @@
 const assert = require('assert')
 const api = require('./../api')
-const TOKEN = 'jEsImlhdCI6MTYwNTAzOTg1N30.oGATBUJ8AY4rE2KjSwN5p0_oB0nsagZ_aOcmbIAAJzc'
+let app = {}
+let MOCK_ID, MOCK_NOME = ''
+let TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ilh1eGFkYXNpbHZhIiwiaWQiOjEsImlhdCI6MTYwNTE4Njg5Mn0.ESxSNOn6lzkG749Dh-jTTXoCrJHMwlMDI2NHP75wt18'
 const headers = {
     Authorization: TOKEN
 }
-let app = {}
-let MOCK_ID, MOCK_NOME = ''
 
 function cadastrar() {
     return app.inject({
@@ -31,7 +31,19 @@ describe('Suite de testes da API Heroes', () => {
         MOCK_NOME = dados.nome
     })
 
-    it('Listar /herois', async () => {
+    it('Listar - /herois - não deve listar herois sem um token', async () => {
+        const result = await app.inject({
+            method: 'GET',
+            url: '/herois',
+        })
+        const dados = JSON.parse(result.payload)
+        const statusCode = result.statusCode
+
+        assert.deepStrictEqual(statusCode, 401)
+        assert.deepStrictEqual(dados.error, "Unauthorized")
+    })
+
+    it('Listar - /herois', async () => {
         const result = await app.inject({
             method: 'GET',
             url: '/herois',
@@ -77,6 +89,20 @@ describe('Suite de testes da API Heroes', () => {
 
         assert.ok(result.statusCode === 200)
         assert.deepStrictEqual(JSON.parse(result.payload).nome, 'Flash')
+    })
+
+    it('Cadastrar POST - /herois - não deve cadastrar com payload errado', async () => {
+        const result = await app.inject({
+            method: 'POST',
+            url: '/herois',
+            headers,
+            payload: {
+                NAME: 'Flash'
+            }
+        })
+        const payload = JSON.parse(result.payload)
+        assert.deepStrictEqual(result.statusCode, 400)
+        assert.ok(payload.message.search('"nome" is required') !== -1)
     })
 
     it('Atualizar PATCH - /herois/:id', async () => {

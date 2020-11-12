@@ -23,11 +23,9 @@ describe('MongoDB Suite de Testes', function () {
 
         context = new Context(new MongoDB(connection, HeroiSchema))
 
-        await context.create(MOCK_HEROI_DEFAULT)
+        const result = await context.create(MOCK_HEROI_DEFAULT)
 
-        const result = await context.create(MOCK_HEROI_ATUALIZAR)
-
-        MOCK_HEROI_ID = result.id
+        MOCK_HEROI_ID = result._id
     })
 
     it('Verificar conexao', async () => {
@@ -52,7 +50,8 @@ describe('MongoDB Suite de Testes', function () {
 
     it('Atualizar', async () => {
         const result = await context.update(MOCK_HEROI_ID, {
-            nome: 'Pernalonga'
+            nome: MOCK_HEROI_ATUALIZAR.nome,
+            poder: MOCK_HEROI_ATUALIZAR.poder
         })
 
         assert.deepStrictEqual(result.nModified, 1)
