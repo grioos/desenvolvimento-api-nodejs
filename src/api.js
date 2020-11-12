@@ -60,6 +60,12 @@ async function main() {
     app.auth.strategy('jwt', 'jwt', {
         key: JWT_SECRET,
         validate: async (dados, request) => {
+            const result = await contextPostgres.read({ id: dados.id, username: dados.username })
+
+            if (!result) return {
+                isValid: false
+            }
+
             return {
                 isValid: true
             }
@@ -69,8 +75,8 @@ async function main() {
     app.validator(Joi)
     app.auth.default('jwt')
     app.route([
-        ...mapRoutes(new HeroRoutes(context), HeroRoutes.methods()),
-        ...mapRoutes(new AuthRoutes(JWT_SECRET, contextPostgres), AuthRoutes.methods())
+        ...mapRoutes(new AuthRoutes(JWT_SECRET, contextPostgres), AuthRoutes.methods()),
+        ...mapRoutes(new HeroRoutes(context), HeroRoutes.methods())
     ])
     await app.start()
 

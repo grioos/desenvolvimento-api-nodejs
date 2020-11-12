@@ -29,10 +29,10 @@ class AuthRoutes extends BaseRoute {
                 notes: 'Faz login com user e senha do banco',
                 validate: {
                     failAction,
-                    payload: {
+                    payload: Joi.object({
                         username: Joi.string().required(),
                         password: Joi.string().required()
-                    }
+                    })
                 }
             },
 

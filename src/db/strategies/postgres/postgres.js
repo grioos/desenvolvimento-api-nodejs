@@ -33,8 +33,8 @@ class Postgres extends ICrud {
     static async connect() {
         const SSL_DB = process.env.SSL_DB === 'true' ? true : undefined
         const SSL_DB_REJECT = process.env.SSL_DB_REJECT === 'false' ? false : undefined
-
         let dialectOptions = {}
+
         if (SSL_DB) {
             dialectOptions = {
                 ssl: {

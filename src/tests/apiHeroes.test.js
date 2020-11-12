@@ -35,6 +35,7 @@ describe('Suite de testes da API Heroes', () => {
         const result = await app.inject({
             method: 'GET',
             url: '/herois',
+            headers
         })
         const dados = JSON.parse(result.payload)
         const statusCode = result.statusCode

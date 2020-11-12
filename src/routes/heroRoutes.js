@@ -24,12 +24,12 @@ class HeroRoutes extends BaseRoute {
                 notes: 'Pode paginar resultados e filtrar por nome',
                 validate: {
                     failAction,
+                    headers,
                     query: {
                         skip: Joi.number().integer().default(0),
                         limit: Joi.number().integer().default(10),
                         nome: Joi.string().min(3).max(100)
                     },
-                    headers
                 }
             },
 
