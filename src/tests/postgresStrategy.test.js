@@ -43,13 +43,14 @@ describe('Postgres Strategy', () => {
     })
 
     it('Atualizar', async () => {
-        const [itemAtualizar] = await context.read({ nome: MOCK_HEROI_ATUALIZAR.nome })
-        const [result] = await context.update(itemAtualizar.id, MOCK_HEROI_ATUALIZAR)
-        const [itemAtualizado] = result === 1 ? await context.read({ id: itemAtualizar.id }) : null
+        const [result] = await context.read()
+        const novoItem = {
+            ...MOCK_HEROI_CADASTRAR,
+            nome: 'Mulher Maravilha',
+        }
+        const [update] = await context.update(result.id, novoItem);
 
-        if (itemAtualizado) delete itemAtualizado.id
-
-        assert.deepStrictEqual(itemAtualizado, MOCK_HEROI_ATUALIZAR)
+        assert.deepStrictEqual(update, 1)
     })
 
     it('Remover por id', async () => {
