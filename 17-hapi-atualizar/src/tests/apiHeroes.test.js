@@ -1,25 +1,26 @@
 const assert = require('assert')
 const api = require('./../api')
 let app = {}
-const MOCK_HEROI_CADASTRAR = {
-    nome: 'Chapolin Colorado',
-    poder: 'Marreta Bionica'
-}
-const MOCK_HEROI_INICIAL = {
-    nome: 'Gavião Negro',
-    poder: 'A mira'
-}
-let MOCK_ID = ''
+let MOCK_ID, MOCK_NOME = ''
 
-describe.only('Suite de testes da API Heroes', () => {
-    beforeEach(async () => {
+function cadastrar() {
+    return app.inject({
+        method: 'POST',
+        url: '/herois',
+        payload: {
+            nome: 'Flash',
+            poder: 'Velocidade'
+        }
+    })
+}
+
+describe('Suite de testes da API Heroes', () => {
+    before(async () => {
         app = await api
-        const result = await app.inject({
-            method: 'POST',
-            url: '/herois',
-            payload: JSON.stringify(MOCK_HEROI_INICIAL)
-        })
+        const result = await cadastrar()
         const dados = JSON.parse(result.payload)
+
+        MOCK_NOME = dados.nome
         MOCK_ID = dados._id
     })
 
@@ -57,22 +58,14 @@ describe.only('Suite de testes da API Heroes', () => {
             url: `/herois?skip=0&limit=${TAMANHO_LIMITE}`
         })
 
-        const errorResult = {
-            "statusCode": 400,
-            "error": "Bad Request",
-            "message": "child \"limit\" fails because [\"limit\" must be a number]",
-            "validation": {
-                "source": "query",
-                "keys": ["limit"]
-            }
-        }
+        const errorResult = { "statusCode": 400, "error": "Bad Request", "message": "\"limit\" must be a number", "validation": { "source": "query", "keys": ["limit"] } }
 
         assert.deepStrictEqual(result.statusCode, 400)
         assert.deepStrictEqual(result.payload, JSON.stringify(errorResult))
     })
 
     it('Listar /herois - deve filtrar um item', async () => {
-        const NAME = 'Flash'
+        const NAME = MOCK_NOME
         const result = await app.inject({
             method: 'GET',
             url: `/herois?skip=0&limit=1000&nome=${NAME}`
@@ -86,12 +79,7 @@ describe.only('Suite de testes da API Heroes', () => {
     })
 
     it('Cadastrar POST - /herois', async () => {
-        const result = await app.inject({
-            method: 'GET',
-            url: `/herois?skip=0&limit=1000&nome=${NAME}`,
-            payload: JSON.stringify(MOCK_HEROI_CADASTRAR)
-        })
-
+        const result = await cadastrar()
         const statusCode = result.statusCode
         const { message, _id } = JSON.parse(result.payload)
 
@@ -119,7 +107,7 @@ describe.only('Suite de testes da API Heroes', () => {
     })
 
     it('Atualizar PATCH - /herois/:id - não deve atualizar com ID incorreto', async () => {
-        const _id = `${MOCK_ID}01`
+        const _id = '5e8ba53fd4a4db0e32522654'
         const expected = {
             poder: 'Super Mira'
         }
@@ -128,11 +116,10 @@ describe.only('Suite de testes da API Heroes', () => {
             url: `/herois/${_id}`,
             payload: JSON.stringify(expected)
         })
-
         const statusCode = result.statusCode
         const dados = JSON.parse(result.payload)
 
         assert.ok(statusCode === 200)
-        assert.deepStrictEqual(dados.message, 'Não foi possivel atualizar')
+        assert.deepStrictEqual(dados.message, 'Não foi possível atualizar')
     })
 })

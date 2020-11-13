@@ -58,7 +58,7 @@ describe('Suite de testes da API Heroes', () => {
         })
         const dados = JSON.parse(result.payload)
         const statusCode = result.statusCode
-        console.log('Dados', dados)
+
         assert.deepStrictEqual(statusCode, 200)
         assert.ok(dados[0].nome === NOME)
     })

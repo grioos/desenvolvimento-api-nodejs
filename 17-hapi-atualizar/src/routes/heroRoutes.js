@@ -30,10 +30,9 @@ class HeroRoutes extends BaseRoute {
                     const { skip, limit, nome } = request.query
                     const query = {
                         nome: {
-                            $regex: `.*${nome}*.`
+                            $regex: `.*${nome}.*`
                         }
                     }
-
 
                     return this.db.read(nome ? query : {}, skip, limit)
                 } catch (error) {
@@ -61,12 +60,12 @@ class HeroRoutes extends BaseRoute {
 
             handler: async request => {
                 try {
-                    const { nome, poder } = require.payload
+                    const { nome, poder } = request.payload
                     const result = await this.db.create({ nome, poder })
 
                     return {
                         message: 'Heroi cadastrado com sucesso',
-                        id: result.id
+                        _id: result.id
                     }
                 } catch (error) {
                     console.log('Deu ruim', error)
@@ -101,8 +100,8 @@ class HeroRoutes extends BaseRoute {
                     const dados = JSON.parse(dadosString)
                     const result = await this.db.update(id, dados)
 
-                    if (result.nModified !== 1) {
-                        message: 'Não foi possivel atualizar'
+                    if (result.nModified !== 1) return {
+                        message: 'Não foi possível atualizar'
                     }
 
                     return {
