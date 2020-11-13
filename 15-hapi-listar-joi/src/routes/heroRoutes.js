@@ -29,7 +29,7 @@ class HeroRoutes extends BaseRoute {
                     const { skip, limit, nome } = request.query
                     const query = {
                         nome: {
-                            $regex: `.*${nome}*.`
+                            $regex: `.*${nome}.*`
                         }
                     }
 
