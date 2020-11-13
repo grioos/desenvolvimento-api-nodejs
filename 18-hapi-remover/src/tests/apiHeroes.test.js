@@ -1,27 +1,27 @@
 const assert = require('assert')
 const api = require('./../api')
 let app = {}
-const MOCK_HEROI_CADASTRAR = {
-    nome: 'Chapolin Colorado',
-    poder: 'Marreta Bionica'
+let MOCK_ID, MOCK_NOME = ''
+
+function cadastrar() {
+    return app.inject({
+        method: 'POST',
+        url: '/herois',
+        payload: {
+            nome: 'Flash',
+            poder: 'Velocidade'
+        }
+    })
 }
-const MOCK_HEROI_INICIAL = {
-    nome: 'Gavião Negro',
-    poder: 'A mira'
-}
-let MOCK_ID = ''
 
 describe('Suite de testes da API Heroes', () => {
-    beforeEach(async () => {
+    before(async () => {
         app = await api
 
-        const result = await app.inject({
-            method: 'POST',
-            url: '/herois',
-            payload: JSON.stringify(MOCK_HEROI_INICIAL)
-        })
+        const result = await cadastrar()
         const dados = JSON.parse(result.payload)
 
+        MOCK_NOME = dados.nome
         MOCK_ID = dados._id
     })
 
@@ -51,24 +51,20 @@ describe('Suite de testes da API Heroes', () => {
     })
 
     it('Listar /herois - deve filtrar pelo item', async () => {
-        const NAME = 'Flash'
+        const NOME = MOCK_NOME
         const result = await app.inject({
             method: 'GET',
-            url: `/herois?skip=0&limit=1000&nome=${NAME}`
+            url: `/herois?skip=0&limit=1000&nome=${NOME}`
         })
         const dados = JSON.parse(result.payload)
         const statusCode = result.statusCode
-
+        console.log('Dados', dados)
         assert.deepStrictEqual(statusCode, 200)
-        assert.deepStrictEqual(dados[0].nome === NAME)
+        assert.ok(dados[0].nome === NOME)
     })
 
     it('Cadastrar POST - /herois', async () => {
-        const result = await app.inject({
-            method: 'POST',
-            url: `/herois`,
-            payload: JSON.stringify(MOCK_HEROI_CADASTRAR)
-        })
+        const result = await cadastrar()
         const statusCode = result.statusCode
         const { message, _id } = JSON.parse(result.payload)
 
@@ -95,7 +91,7 @@ describe('Suite de testes da API Heroes', () => {
     })
 
     it('Atualizar PATCH - /herois/:id - não deve atualizar com ID incorreto', async () => {
-        const _id = `${MOCK_ID}01`
+        const _id = '5e8ba53fd4a4db0e32522654'
         const expected = {
             poder: 'Super Mira'
         }
@@ -108,15 +104,15 @@ describe('Suite de testes da API Heroes', () => {
         const dados = JSON.parse(result.payload)
 
         assert.ok(statusCode === 200)
-        assert.deepStrictEqual(dados.message, 'Não foi possivel atualizar')
+        assert.deepStrictEqual(dados.message, 'Não foi possível atualizar')
     })
 
     it('Remover DELETE - /herois/:id', async () => {
-        const _id = `${MOCK_ID}`
-        const result = {
+        const _id = MOCK_ID
+        const result = await app.inject({
             method: 'DELETE',
             url: `/herois/${_id}`
-        }
+        })
         const statusCode = result.statusCode
         const dados = JSON.parse(result.payload)
 

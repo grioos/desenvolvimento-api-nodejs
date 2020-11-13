@@ -1,4 +1,5 @@
-const Hapi = require('hapi')
+const Hapi = require('@hapi/hapi')
+const Joi = require('joi')
 const Context = require('./db/strategies/base/contextStrategy')
 const MongoDb = require('./db/strategies/mongodb/mongodb')
 const HeroSchema = require('./db/strategies/mongodb/schemas/heroisSchema')
@@ -15,9 +16,11 @@ async function main() {
     const connection = MongoDb.connect()
     const context = new Context(new MongoDb(connection, HeroSchema))
 
-    app.route([
-        ...mapRoutes(new HeroRoutes(context), HeroRoutes.methods())
-    ])
+    app.validator(Joi)
+    app.route(
+        mapRoutes(new HeroRoutes(context), HeroRoutes.methods())
+    )
+
 
     await app.start()
     console.log('Servidor rodando na porta', app.info.port)

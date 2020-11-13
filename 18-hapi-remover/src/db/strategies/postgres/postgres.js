@@ -1,6 +1,5 @@
 const ICrud = require('./../interfaces/interfaceCrud')
 const Sequelize = require('sequelize')
-const { schema } = require('./schemas/heroiSchema')
 
 class Postgres extends ICrud {
     constructor(connection, schema) {
@@ -54,13 +53,14 @@ class Postgres extends ICrud {
         const connection = new Sequelize(
             'heroes',
             'grios',
-            'password', {
-            host: 'localhost',
-            dialect: 'postgres',
-            quoteIdentifiers: false,
-            operatorsAliases: false,
-            logging: false
-        }
+            'password',
+            {
+                host: 'localhost',
+                dialect: 'postgres',
+                quoteIdentifiers: false,
+                operatorsAliases: false,
+                logging: false
+            }
         )
 
         return connection

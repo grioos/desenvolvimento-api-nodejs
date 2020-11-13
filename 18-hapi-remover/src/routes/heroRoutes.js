@@ -29,9 +29,13 @@ class HeroRoutes extends BaseRoute {
             handler: (request, headers) => {
                 try {
                     const { skip, limit, nome } = request.query
-                    const query = nome ? { nome: { $regex: `.*${nome}*.` } } : {}
+                    const query = {
+                        nome: {
+                            $regex: `.*${nome}.*`
+                        }
+                    }
 
-                    return this.db.read(query, skip, limit)
+                    return this.db.read(nome ? query : {}, skip, limit)
                 } catch (error) {
                     console.log('Deu ruim', error)
 
@@ -79,6 +83,7 @@ class HeroRoutes extends BaseRoute {
             method: 'PATCH',
             config: {
                 validate: {
+                    failAction,
                     params: {
                         id: Joi.string().required()
                     },
@@ -89,7 +94,7 @@ class HeroRoutes extends BaseRoute {
                 }
             },
 
-            handler: async request => {
+            handler: async (request, headers) => {
                 try {
                     const { id } = request.params
                     const { payload } = request
@@ -97,8 +102,8 @@ class HeroRoutes extends BaseRoute {
                     const dados = JSON.parse(dadosString)
                     const result = await this.db.update(id, dados)
 
-                    if (result.nModified !== 1) {
-                        return Boom.preconditionFailed('Id não foi encontrado no banco')
+                    if (result.nModified !== 1) return {
+                        message: 'Não foi possível atualizar'
                     }
 
                     return {
