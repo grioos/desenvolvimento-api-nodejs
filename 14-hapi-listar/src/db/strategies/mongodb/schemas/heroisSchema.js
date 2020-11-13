@@ -12,7 +12,7 @@ const heroiSchema = new Mongoose.Schema({
 
     insertedAt: {
         type: Date,
-        dafault: new Date()
+        default: new Date()
     }
 })
 

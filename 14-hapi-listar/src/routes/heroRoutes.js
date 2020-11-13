@@ -28,7 +28,7 @@ class HeroRoutes extends BaseRoute {
                 } catch (error) {
                     console.log('Deu ruim', error)
 
-                    return 'Erro interno no servidor.'
+                    return 'Erro interno no servidor'
                 }
             }
         }
