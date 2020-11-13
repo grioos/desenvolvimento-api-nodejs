@@ -6,7 +6,7 @@ const MOCK_HEROI_CADASTRAR = {
     poder: 'Marreta Bionica'
 }
 
-describe.only('Suite de testes da API Heroes', () => {
+describe('Suite de testes da API Heroes', () => {
     beforeEach(async () => {
         app = await api
     })
@@ -45,15 +45,7 @@ describe.only('Suite de testes da API Heroes', () => {
             url: `/herois?skip=0&limit=${TAMANHO_LIMITE}`
         })
 
-        const errorResult = {
-            "statusCode": 400,
-            "error": "Bad Request",
-            "message": "child \"limit\" fails because [\"limit\" must be a number]",
-            "validation": {
-                "source": "query",
-                "keys": ["limit"]
-            }
-        }
+        const errorResult = { "statusCode": 400, "error": "Bad Request", "message": "\"limit\" must be a number", "validation": { "source": "query", "keys": ["limit"] } }
 
         assert.deepStrictEqual(result.statusCode, 400)
         assert.deepStrictEqual(result.payload, JSON.stringify(errorResult))
@@ -75,16 +67,17 @@ describe.only('Suite de testes da API Heroes', () => {
 
     it('Cadastrar POST - /herois', async () => {
         const result = await app.inject({
-            method: 'GET',
-            url: `/herois?skip=0&limit=1000&nome=${NAME}`,
-            payload: JSON.stringify(MOCK_HEROI_CADASTRAR)
+            method: 'POST',
+            url: '/herois',
+            payload: {
+                nome: 'Flash',
+                poder: 'Velocidade'
+            }
         })
-
         const statusCode = result.statusCode
-        const { message, _id } = JSON.parse(result.payload)
+        const dados = JSON.parse(result.payload)
 
         assert.ok(statusCode === 200)
-        assert.notStrictEqual(_id, undefined)
-        assert.deepStrictEqual(message, 'Heroi cadastrado com sucesso')
+        assert.deepStrictEqual(dados.message, 'Heroi cadastrado com sucesso')
     })
 })
