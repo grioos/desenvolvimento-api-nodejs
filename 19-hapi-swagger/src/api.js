@@ -8,7 +8,7 @@ const MongoDb = require('./db/strategies/mongodb/mongodb')
 const HeroiSchema = require('./db/strategies/mongodb/schemas/heroisSchema')
 const HeroRoutes = require('./routes/heroRoutes')
 const app = new Hapi.Server({
-    port: 7000
+    port: 5000
 })
 
 function mapRoutes(instance, methods) {
