@@ -60,15 +60,10 @@ async function main() {
     app.auth.strategy('jwt', 'jwt', {
         key: JWT_SECRET,
         validate: async (dados, request) => {
-            const [result] = await contextPostgres.read({
-                username: dados.username.toLowerCase(),
-                id: dado.id
-            })
+            const result = await contextPostgres.read({ id: dados.id, username: dados.username })
 
-            if (!result) {
-                return {
-                    isValid: false
-                }
+            if (!result) return {
+                isValid: false
             }
 
             return {
