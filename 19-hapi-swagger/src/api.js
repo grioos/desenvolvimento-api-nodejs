@@ -1,13 +1,14 @@
-const Hapi = require('hapi')
+const Hapi = require('@hapi/hapi')
+const Inert = require('@hapi/inert')
+const Vision = require('@hapi/vision')
 const HapiSwagger = require('hapi-swagger')
-const Vision = require('vision')
-const Inert = require('inert')
+const Joi = require('joi')
 const Context = require('./db/strategies/base/contextStrategy')
 const MongoDb = require('./db/strategies/mongodb/mongodb')
 const HeroiSchema = require('./db/strategies/mongodb/schemas/heroisSchema')
 const HeroRoutes = require('./routes/heroRoutes')
 const app = new Hapi.Server({
-    port: 5000
+    port: 7000
 })
 
 function mapRoutes(instance, methods) {
@@ -21,11 +22,19 @@ async function main() {
         info: {
             title: 'API Herois - #CursoNodeBR',
             version: 'v1.0'
-        },
-        lang: 'pt'
+        }
     }
 
+    await app.register([
+        Vision,
+        Inert,
+        {
+            plugin: HapiSwagger,
+            options: swaggerOptions
+        }
+    ])
 
+    app.validator(Joi)
 
     app.route(
         mapRoutes(new HeroRoutes(context), HeroRoutes.methods())
