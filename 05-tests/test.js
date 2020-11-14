@@ -3,7 +3,7 @@ const nock = require('nock')
 const { obterPessoas } = require('./service')
 
 describe('Star Wars Tests', () => {
-    beforeEach(() => {
+    before(() => {
         const response = {
             count: 1,
             next: null,
