@@ -40,7 +40,7 @@ class MongoDB extends ICrud {
 
             insertedAt: {
                 type: Date,
-                dafault: new Date()
+                default: new Date()
             }
         })
 

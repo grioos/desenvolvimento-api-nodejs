@@ -1,7 +1,6 @@
 const assert = require('assert')
 const MongoDb = require('./../db/strategies/mongodb')
 const Context = require('./../db/strategies/base/contextStrategy')
-const { read } = require('fs')
 const MOCK_HEROI_CADASTRAR = {
     nome: 'Mulher Maravilha',
     poder: 'Laço'
@@ -28,12 +27,13 @@ describe('MongoDB Suite de Testes', function () {
 
     it('verificar conexao', async () => {
         const result = await context.isConnected()
+        const expected = 'Conectado'
 
         assert.deepStrictEqual(result, expected)
     })
 
     it('cadastrar', async () => {
-        const { nome, poder } = await context.create()
+        const { nome, poder } = await context.create(MOCK_HEROI_CADASTRAR)
 
         assert.deepStrictEqual({ nome, poder }, MOCK_HEROI_CADASTRAR)
     })
