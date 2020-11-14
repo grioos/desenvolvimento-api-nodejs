@@ -24,8 +24,8 @@ class ICrud {
     isConnected() {
         throw new NotImplementedException()
     }
-
-    connect() {
+    
+    connected() {
         throw new NotImplementedException()
     }
 }

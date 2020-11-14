@@ -49,10 +49,31 @@ class Postgres extends ICrud {
 
     }
 
-    create(item) {
-        const { dataValues } = this._herois.create(item)
+    async connect() {
+        this._driver = new Sequelize(
+            'heroes',
+            'grios',
+            'password', 
+            {
+                host: 'localhost',
+                dialect: 'postgres',
+                quoteIdentifiers: false,
+                operatorsAliases: false,
+                logging: false
+            }
+        )
+
+        await this.defineModel()
+    }
+    
+    async create(item) {
+        const { dataValues } = await this._herois.create(item)
 
         return dataValues
+    }
+
+    read(item = {}) {
+        return this._herois.findAll({ where: item, raw: true })
     }
 
     update(id, item) {
@@ -62,25 +83,6 @@ class Postgres extends ICrud {
     delete(id) {
         const query = id ? { id } : {}
         return this._herois.destroy({ where: query })
-    }
-
-    read(item = {}) {
-        return this._herois.findAll({ where: item, raw: true })
-    }
-
-    async connect() {
-        this._driver = new Sequelize(
-            'heroes',
-            'grios',
-            'password', {
-            host: 'localhost',
-            dialect: 'postgres',
-            quoteIdentifiers: false,
-            operatorsAliases: false
-        }
-        )
-
-        await this.defineModel()
     }
 }
 

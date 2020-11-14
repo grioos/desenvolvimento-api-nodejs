@@ -11,7 +11,7 @@ const MOCK_HEROI_ATUALIZAR = {
     poder: 'Dinheiro'
 }
 
-describe('Postgres Strategy', () => {
+describe('Postgres Strategy', function() {
     before(async () => {
         await context.connect()
         await context.delete()
