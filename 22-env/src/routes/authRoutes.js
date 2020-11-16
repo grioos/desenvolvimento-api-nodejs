@@ -1,21 +1,17 @@
-const Joi = require('joi')
+const Joi = require('@hapi/joi')
+const Boom = require('@hapi/boom')
 const Jwt = require('jsonwebtoken')
-const Boom = require('boom')
 const BaseRoute = require('./base/baseRoutes')
 const PasswordHelper = require('./../helpers/passwordHelper')
 const failAction = (request, headers, error) => {
     throw error
 }
-const USER = {
-    username: 'xuxadasilva',
-    password: '123'
-}
 
 class AuthRoutes extends BaseRoute {
     constructor(secret, db) {
         super()
-        this.secret = secret
         this.db = db
+        this.secret = secret
     }
 
     login() {

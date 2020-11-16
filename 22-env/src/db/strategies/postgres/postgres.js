@@ -1,11 +1,11 @@
+const Sequelize = require('sequelize')             
 const ICrud = require('./../interfaces/interfaceCrud')
-const Sequelize = require('sequelize')
 
 class Postgres extends ICrud {
     constructor(connection, schema) {
         super()
-        this._connection = connection
         this._schema = schema
+        this._connection = connection
     }
 
     async isConnected() {
@@ -50,8 +50,8 @@ class Postgres extends ICrud {
         return dataValues
     }
 
-    read(item = {}) {
-        return this._schema.findAll({ where: item, raw: true })
+    async read(item = {}) {
+        return await this._schema.findAll({ where: item, raw: true })
     }
 
     async update(id, item, upsert = false) {
@@ -64,10 +64,10 @@ class Postgres extends ICrud {
         })
     }
 
-    delete(id) {
+    async delete(id) {
         const query = id ? { id } : {}
 
-        return this._schema.destroy({ where: query })
+        return await this._schema.destroy({ where: query })
     }
 }
 

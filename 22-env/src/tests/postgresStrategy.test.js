@@ -10,10 +10,12 @@ const MOCK_HEROI_ATUALIZAR = {
     nome: 'Batman',
     poder: 'Dinheiro'
 }
-let context = {}
+let context
 
-describe('Postgres Strategy', () => {
-    before(async () => {
+describe('Postgres Strategy', function() {
+    this.timeout(Infinity)
+
+    this.beforeAll(async () => {
         const connection = await Postgres.connect()
         const model = await Postgres.defineModel(connection, HeroiSchema)
 
@@ -45,7 +47,7 @@ describe('Postgres Strategy', () => {
         assert.deepStrictEqual(result, MOCK_HEROI_CADASTRAR)
     })
 
-    it('Aatualizar', async () => {
+    it('Atualizar', async () => {
         const [itemAtualizar] = await context.read({ nome: MOCK_HEROI_ATUALIZAR.nome })
         const novoItem = { ...MOCK_HEROI_ATUALIZAR, nome: 'Mulher Maravilha' }
         const [result] = await context.update(itemAtualizar.id, novoItem)

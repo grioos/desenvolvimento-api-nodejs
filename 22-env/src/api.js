@@ -14,10 +14,9 @@ config({
 const Hapi = require('@hapi/hapi')
 const Inert = require('@hapi/inert')
 const Vision = require('@hapi/vision')
+const Joi = require('@hapi/joi')
 const HapiSwagger = require('hapi-swagger')
-const Joi = require('joi')
 const HapiJwt = require('hapi-auth-jwt2')
-const Jwt = require('jsonwebtoken')
 const Context = require('./db/strategies/base/contextStrategy')
 const MongoDb = require('./db/strategies/mongodb/mongodb')
 const HeroiSchema = require('./db/strategies/mongodb/schemas/heroisSchema')
@@ -35,11 +34,11 @@ function mapRoutes(instance, methods) {
 }
 
 async function main() {
-    const connection = MongoDb.connect()
-    const context = new Context(new MongoDb(connection, HeroiSchema))
     const connectionPostgres = await Postgres.connect()
     const model = await Postgres.defineModel(connectionPostgres, UsuarioSchema)
     const contextPostgres = new Context(new Postgres(connectionPostgres, model))
+    const connection = MongoDb.connect()
+    const context = new Context(new MongoDb(connection, HeroiSchema))
     const swaggerOptions = {
         info: {
             title: 'API Herois - #CursoNodeBR',

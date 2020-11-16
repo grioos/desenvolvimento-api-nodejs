@@ -1,4 +1,5 @@
 const assert = require('assert')
+const { TIMEOUT } = require('dns')
 const api = require('./../api')
 const TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ilh1eGFkYXNpbHZhIiwiaWQiOjEsImlhdCI6MTYwNTE4Njg5Mn0.ESxSNOn6lzkG749Dh-jTTXoCrJHMwlMDI2NHP75wt18'
 const headers = {
@@ -19,8 +20,10 @@ function cadastrar() {
     })
 }
 
-describe('Suite de testes da API Heroes', () => {
-    before(async () => {
+describe('Suite de testes da API Heroes', function() {
+    this.timeout(Infinity)
+
+    this.beforeAll(async () => {
         app = await api
 
         const result = await cadastrar()
@@ -31,11 +34,11 @@ describe('Suite de testes da API Heroes', () => {
         MOCK_NOME = dados.nome
     })
 
-    it('Listar /herois', async () => {
+    it('Listar - /herois', async () => {
         const result = await app.inject({
             method: 'GET',
-            url: '/herois',
             headers,
+            url: '/herois',
         })
         const dados = JSON.parse(result.payload)
         const statusCode = result.statusCode

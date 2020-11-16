@@ -15,10 +15,12 @@ const MOCK_HEROI_ATUALIZAR = {
     poder: 'Velocidade'
 }
 let MOCK_HEROI_ID = ''
-let context = {}
+let context
 
 describe('MongoDB Suite de Testes', function () {
-    before(async () => {
+    this.timeout(Infinity)
+
+    this.beforeAll(async () => {
         const connection = MongoDB.connect()
 
         context = new Context(new MongoDB(connection, HeroiSchema))

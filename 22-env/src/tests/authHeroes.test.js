@@ -8,13 +8,15 @@ const USER = {
     password: '123'
 }
 const USER_DB = {
-    username: USER.username.toLowerCase(),
+    ...USER,
     password: '$2b$04$vE.8CM6KSMjepYZFLXxdU.f75JLucNvaXhYb8qWJ06Awl.OLHi0vG'
 }
-let app = {}
+let app
 
-describe('Auth test suite', () => {
-    before(async () => {
+describe('Auth test suite', function() {
+    this.timeout(Infinity)
+
+    this.beforeAll(async () => {
         app = await api
 
         const connectionPostgres = await PostGres.connect()
