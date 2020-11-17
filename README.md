@@ -8,9 +8,7 @@ Inscrições: [https://treinamento.nodebr.org/](https://treinamento.nodebr.org/)
 
 Este treinamento foi  **desenvolvido**  sob medida  **baseado**  em uma pesquisa sobre o que a  **comunidade brasileira mais necessita**, suas principais  **dificuldades**  e  **desafios**. Neste curso você aprenderá desde o básico de Javascript, ciclo de vida, manipulação de listas ao desenvolvimento real de aplicações em ambiente de produção. Na prática você também aprenderá conceitos sobre desenvolvimento orientado a testes, autenticação, autorização, documentação de serviços e gerenciamento de variáveis de ambiente (environments) de aplicações.
 
-## INSTRUTOR
-
-### [Erick Wendel](https://twitter.com/erickwendel_)
+### INSTRUTOR: [Erick Wendel](https://twitter.com/erickwendel_)
 
 ## CONTEÚDO
 
