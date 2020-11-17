@@ -8,9 +8,15 @@ const MOCK_HEROI_CADASTRAR = {
 }
 let context
 
-describe('Postgres Strategy', function () {
+describe('Postgres Strategy', function() {
     this.timeout(Infinity)
 
+<<<<<<< HEAD
+=======
+describe('Postgres Strategy', function() {
+    this.timeout(Infinity)
+
+>>>>>>> df774d3868f854d65f6998f0d3476096c0f11d58
     this.beforeAll(async () => {
         const connection = await Postgres.connect()
         const model = await Postgres.defineModel(connection, HeroiSchema)

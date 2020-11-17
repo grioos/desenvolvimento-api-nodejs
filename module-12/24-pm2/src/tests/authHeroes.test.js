@@ -13,7 +13,7 @@ const USER_DB = {
 }
 let app = {}
 
-describe('Auth test suite', function () {
+describe('Auth test suite', function() {
     this.timeout(Infinity)
 
     this.beforeAll(async () => {

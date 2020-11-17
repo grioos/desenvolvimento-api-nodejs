@@ -1,8 +1,12 @@
 const assert = require('assert')
 const api = require('./../api')
+<<<<<<< HEAD
 let app = {}
 let MOCK_ID, MOCK_NOME = ''
 let TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ilh1eGFkYXNpbHZhIiwiaWQiOjEsImlhdCI6MTYwNTE4Njg5Mn0.ESxSNOn6lzkG749Dh-jTTXoCrJHMwlMDI2NHP75wt18'
+=======
+const TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Ilh1eGFkYXNpbHZhIiwiaWQiOjEsImlhdCI6MTYwNTE4Njg5Mn0.ESxSNOn6lzkG749Dh-jTTXoCrJHMwlMDI2NHP75wt18'
+>>>>>>> df774d3868f854d65f6998f0d3476096c0f11d58
 const headers = {
     Authorization: TOKEN
 }
@@ -19,7 +23,7 @@ function cadastrar() {
     })
 }
 
-describe('Suite de testes da API Heroes', function () {
+describe('Suite de testes da API Heroes', function() {
     this.timeout(Infinity)
 
     this.beforeAll(async () => {

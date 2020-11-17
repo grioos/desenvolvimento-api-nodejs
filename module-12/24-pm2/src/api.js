@@ -23,7 +23,6 @@ const Postgres = require('./db/strategies/postgres/postgres')
 const UsuarioSchema = require('./db/strategies/postgres/schemas/usuarioSchema')
 const HeroRoutes = require('./routes/heroRoutes')
 const AuthRoutes = require('./routes/authRoutes')
-const UtilRoutes = require('./routes/utilRoutes')
 const JWT_SECRET = process.env.JWT_KEY
 const app = new Hapi.Server({
     port: process.env.PORT
@@ -75,8 +74,7 @@ async function main() {
     app.auth.default('jwt')
     app.route([
         ...mapRoutes(new AuthRoutes(JWT_SECRET, contextPostgres), AuthRoutes.methods()),
-        ...mapRoutes(new HeroRoutes(context), HeroRoutes.methods()),
-        ...mapRoutes(new UtilRoutes(), UtilRoutes.methods()),
+        ...mapRoutes(new HeroRoutes(context), HeroRoutes.methods())
     ])
     await app.start()
 
