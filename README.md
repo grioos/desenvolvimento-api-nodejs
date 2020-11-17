@@ -121,7 +121,3 @@ Instrutor: [Erick Wendel](https://twitter.com/erickwendel_)
 - Postgres Gratuito no Heroku
 - Trabalhando com PM2 para gerência de apps
 - Expondo cobertura de código com istanbul
-
-### Módulo 13  Próximos passos
-
-- O que aprender?
