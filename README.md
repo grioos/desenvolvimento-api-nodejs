@@ -1,6 +1,6 @@
 # Bem vindo ao Curso NodeBR
 
-<img src="./src/nodebr.jpeg" alt="capa curso nodebr" title="Bem vindo ao Curso NodeBR"  />
+<img src="https://raw.githubusercontent.com/nodejsbrazil/cursonodebr01/master/src/nodebr.jpeg" alt="capa curso nodebr" title="Bem vindo ao Curso NodeBR"  />
 
 Inscrições: [https://treinamento.nodebr.org/](https://treinamento.nodebr.org/)
 
